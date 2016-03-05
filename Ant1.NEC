@@ -1,0 +1,17 @@
+CM 
+CE
+SY Height=10
+SY Length=5
+SY OffsetY=2.5
+SY D=0.001
+SY Feedsegment=5
+GW	2	11	-Length/2	OffsetY	Height	-Length/2	0	Height	D
+GW	3	11	-Length/2	-OffSetY	Height	-Length/2	0	Height	D
+GW	4	11	Length/2	OffSetY	Height	Length/2	0	Height	D
+GW	5	11	Length/2	-OffSetY	height	Length/2	0	Height	D
+GE	1
+GN	2	0	0	0	4	0.003
+EK
+EX	0	4	Feedsegment	0	1	0	0
+FR	0	0	0	0	7.2	0
+EN

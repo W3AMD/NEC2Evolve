@@ -1,0 +1,11 @@
+CM Example 1 :	Dipole in free space 	
+CM See GetStarted.txt
+CE
+GW	1	9	0	-0.2418	100	0	0.2418	100	0.001
+GE	1
+GN	2	0	0	0	4	0.003
+EK
+EX	0	1	5	0	1	0	0
+FR	0	0	0	0	300	0
+RP	0	19	73	1003	-90	0	5	5		
+EN
