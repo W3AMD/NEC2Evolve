@@ -11,6 +11,7 @@ object DesignForm: TDesignForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object BitBtn1: TBitBtn
@@ -39,6 +40,7 @@ object DesignForm: TDesignForm
     Caption = 'Band List (Meters)'
     Enabled = False
     TabOrder = 2
+    Visible = False
     object Band160: TCheckBox
       Left = 16
       Top = 24
@@ -72,8 +74,7 @@ object DesignForm: TDesignForm
       Width = 41
       Height = 17
       Caption = '40'
-      Checked = True
-      State = cbChecked
+      Enabled = False
       TabOrder = 3
     end
     object Band30: TCheckBox
@@ -136,7 +137,8 @@ object DesignForm: TDesignForm
       Width = 41
       Height = 17
       Caption = '2'
-      Enabled = False
+      Checked = True
+      State = cbChecked
       TabOrder = 10
     end
     object Band1: TCheckBox
@@ -162,12 +164,12 @@ object DesignForm: TDesignForm
     Left = 8
     Top = 8
     Width = 177
-    Height = 88
+    Height = 186
     Caption = 'Antenna Type'
+    Enabled = False
     ItemIndex = 0
     Items.Strings = (
-      'Dipole'
-      'Cube')
+      'Dipole (symetrical)')
     TabOrder = 3
   end
   object SupportPoints: TGroupBox
@@ -184,33 +186,33 @@ object DesignForm: TDesignForm
       Height = 13
       Caption = 'Number Of Supports:'
     end
-    object Label2: TLabel
+    object MaxHeightLB: TLabel
       Left = 18
       Top = 173
-      Width = 101
+      Width = 106
       Height = 13
-      Caption = 'Maximum Height (m):'
+      Caption = 'Maximum Height (cm):'
     end
-    object Label3: TLabel
+    object MaxYardSizeLB: TLabel
       Left = 16
       Top = 272
-      Width = 113
+      Width = 118
       Height = 13
-      Caption = 'Max Yard Size (m; x,y):'
+      Caption = 'Max Yard Size (cm; x,y):'
     end
-    object Label4: TLabel
+    object MinimumHeightLB: TLabel
       Left = 16
       Top = 219
-      Width = 97
+      Width = 102
       Height = 13
-      Caption = 'Minimum Height (m):'
+      Caption = 'Minimum Height (cm):'
     end
-    object Label5: TLabel
+    object FeedPointHeightLB: TLabel
       Left = 16
       Top = 345
-      Width = 108
+      Width = 113
       Height = 13
-      Caption = 'Feed Point Height: (m)'
+      Caption = 'Feed Point Height: (cm)'
     end
     object NumberSupports: TEdit
       Left = 24
@@ -253,7 +255,7 @@ object DesignForm: TDesignForm
       Width = 62
       Height = 21
       TabOrder = 3
-      Text = '10'
+      Text = '370'
     end
     object MaxHeight: TUpDown
       Left = 80
@@ -262,7 +264,8 @@ object DesignForm: TDesignForm
       Height = 21
       Associate = Edit1
       Min = 1
-      Position = 10
+      Max = 100000
+      Position = 370
       TabOrder = 4
     end
     object Edit2: TEdit
@@ -271,7 +274,7 @@ object DesignForm: TDesignForm
       Width = 65
       Height = 21
       TabOrder = 5
-      Text = '15'
+      Text = '70'
     end
     object MaxXSize: TUpDown
       Left = 81
@@ -279,8 +282,8 @@ object DesignForm: TDesignForm
       Width = 16
       Height = 21
       Associate = Edit2
-      Max = 50
-      Position = 15
+      Max = 100000
+      Position = 70
       TabOrder = 6
     end
     object Edit3: TEdit
@@ -289,7 +292,7 @@ object DesignForm: TDesignForm
       Width = 65
       Height = 21
       TabOrder = 7
-      Text = '4'
+      Text = '0'
     end
     object MaxYSize: TUpDown
       Left = 81
@@ -297,8 +300,7 @@ object DesignForm: TDesignForm
       Width = 16
       Height = 21
       Associate = Edit3
-      Max = 50
-      Position = 4
+      Max = 100000
       TabOrder = 8
     end
     object Edit4: TEdit
@@ -307,7 +309,7 @@ object DesignForm: TDesignForm
       Width = 62
       Height = 21
       TabOrder = 9
-      Text = '3'
+      Text = '300'
     end
     object MinHeight: TUpDown
       Left = 80
@@ -315,7 +317,8 @@ object DesignForm: TDesignForm
       Width = 16
       Height = 21
       Associate = Edit4
-      Position = 3
+      Max = 100000
+      Position = 300
       TabOrder = 10
     end
     object FeedHeight: TUpDown
@@ -324,7 +327,8 @@ object DesignForm: TDesignForm
       Width = 16
       Height = 21
       Associate = Edit5
-      Position = 10
+      Max = 100000
+      Position = 300
       TabOrder = 11
     end
     object Edit5: TEdit
@@ -333,15 +337,16 @@ object DesignForm: TDesignForm
       Width = 65
       Height = 21
       TabOrder = 12
-      Text = '10'
+      Text = '300'
     end
   end
   object TunerOptions: TRadioGroup
     Left = 8
-    Top = 104
+    Top = 194
     Width = 177
     Height = 153
     Caption = 'Tuner Options'
+    Enabled = False
     ItemIndex = 0
     Items.Strings = (
       'None (SWR < 2)'
@@ -349,5 +354,42 @@ object DesignForm: TDesignForm
       'Additional tuner (SWR <10)'
       'Wet noodle tuner (SWR <100)')
     TabOrder = 5
+  end
+  object BandList: TRadioGroup
+    Left = 191
+    Top = 8
+    Width = 121
+    Height = 343
+    Caption = 'Band List (Meters)'
+    Items.Strings = (
+      '160'
+      '80'
+      '60'
+      '40'
+      '30'
+      '20'
+      '17'
+      '15'
+      '12'
+      '10'
+      '6'
+      '2'
+      '1.25'
+      '70 cm'
+      '33 cm'
+      '23 cm')
+    TabOrder = 6
+    OnClick = BandListClick
+  end
+  object NoStraysAllowed: TCheckBox
+    Left = 8
+    Top = 368
+    Width = 121
+    Height = 17
+    Caption = 'No Strays Allowed'
+    Checked = True
+    State = cbChecked
+    TabOrder = 7
+    Visible = False
   end
 end

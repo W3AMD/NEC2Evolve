@@ -726,6 +726,7 @@ void c_geometry::wire(int tag_id, int segment_count, nec_float xw1,
 			 remains open in the OS*/
 			/* TODO : Need to look at all the exceptions and how they can be
 			thrown as a reference */
+			/*
 			nec_exception* nex =
 				new nec_exception
 				("GEOMETRY DATA ERROR -- FIRST SEGMENT MIDPOINT");
@@ -738,10 +739,24 @@ void c_geometry::wire(int tag_id, int segment_count, nec_float xw1,
 			nex->append(" (TAG ID #");
 			nex->append(a.tag_id());
 			nex->append(")");
-
 			throw nex;
+			*/
+
+			AnsiString message;
+			message+="GEOMETRY DATA ERROR -- FIRST SEGMENT MIDPOINT";
+			message+=" OF WIRE #";
+			message+=IntToStr((int)m_wires.size() + 1);
+			message+=" (TAG ID #";
+			message+=IntToStr((int)tag_id);
+			message+=") INTERSECTS WIRE #";
+			message+=IntToStr((int)i + 1);
+			message+="  (TAG ID #";
+			message+=IntToStr((int)a.tag_id());
+			message+=")";
+			throw Exception(message);
 		}
 		if (a.intersect(end_seg_midpoint)) {
+			/*
 			nec_exception* nex =
 				new nec_exception
 				("GEOMETRY DATA ERROR -- LAST SEGMENT MIDPOINT");
@@ -754,7 +769,21 @@ void c_geometry::wire(int tag_id, int segment_count, nec_float xw1,
 			nex->append(" (TAG ID #");
 			nex->append(a.tag_id());
 			nex->append(")");
-			throw nex;
+			*/
+
+			AnsiString message;
+			message+="GEOMETRY DATA ERROR -- LAST SEGMENT MIDPOINT";
+			message+=" OF WIRE #";
+			message+=IntToStr((int)m_wires.size() + 1);
+			message+=" (TAG ID #";
+			message+=IntToStr(tag_id);
+			message+=") INTERSECTS WIRE #";
+			message+=IntToStr((int)i + 1);
+			message+="  (TAG ID #";
+			message+=IntToStr(a.tag_id());
+			message+=")";
+			throw Exception(message);//throw nex;
+//throw nex;
 		}
 	}
 
@@ -1492,7 +1521,7 @@ void c_geometry::connect_segments(int ignd) {
 			("GEOMETRY HAS ONE OR FEWER SEGMENTS. Please send bug report. This causes an error that we're trying to fix."
 			);
 	}
-
+	
 	if (ignd != 0) {
 		m_output->nec_printf("\n\n     GROUND PLANE SPECIFIED.");
 
@@ -3146,7 +3175,7 @@ void c_geometry::frequency_scale(nec_float freq_mhz) {
 	 It's assuming the frequency from the card and not checking the full
 	 range*/
 	DEBUG_TRACE("frequency_scale(" << freq_mhz << ")");
-	nec_float fr = (1.0e6 * freq_mhz) / em::speed_of_light();
+	nec_float fr = (1.0e+6 * freq_mhz) / em::speed_of_light();
 	DEBUG_TRACE("       fr=(" << fr << ")");
 
 	for (int i = 0; i < n_segments; i++) {
@@ -3163,6 +3192,7 @@ void c_geometry::frequency_scale(nec_float freq_mhz) {
 			 segment_length[i]);*/
 			/*TODO : Segment loop starts at zero but file output segment starts at 1*/
 			unsigned int iCheck=i;
+			/*
 			nec_exception nex("SCALE - SEGMENT[");
 			nex.append(i);
 			nex.append("] LENGTH TOO SMALL (");
@@ -3175,7 +3205,20 @@ void c_geometry::frequency_scale(nec_float freq_mhz) {
 			// add enumerated type for error
 			nex.SegmentErrorType = nec_exception::SegmentTooShortForWavelength;
 			nex.segmentnumber = i;
-			throw nex;
+			*/
+			AnsiString message;
+			message+="SCALE - SEGMENT[";
+			message+=IntToStr(i);
+			message+="] LENGTH TOO SMALL (";
+			message+=FormatFloat("0.00E+0",segment_length[i]);
+			message+=") WAVELENGTHS ";
+			message+="NUM SEGS = ";
+			message+=IntToStr(n_segments);
+			message+=" SEG_LEN= ";
+			message+=FormatFloat("0.00E+0",si_unscaled[i]);
+			message+=" FREQ= ";
+			message+=FormatFloat("0.00E+0",freq_mhz);
+			throw Exception(message);//throw nex;
 		}
 	}
 

@@ -28,7 +28,11 @@
   a different complex number precision. For example
   float, or long double.
 */
-typedef double nec_float;
+#ifdef WIN_64
+typedef float nec_float;           //use float 64 bit for Win 64
+#else
+typedef double nec_float;          //use double 64 bit for Win 32
+#endif
 typedef std::complex<nec_float> nec_complex;
 
 /* Version information */

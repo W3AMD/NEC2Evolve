@@ -25,6 +25,9 @@
 #include <System.hpp>
 #include <Vcl.ComCtrls.hpp>
 
+#define SCALE_CM 0.001
+#define SCALE_M 1
+
 struct nec_file_results {
 	bool Error;
 	char ErrorMessage[MAX_PATH];
@@ -42,7 +45,6 @@ struct nec_file_results {
 
 	unsigned int SegmentNumber;
 } Nec_File_Results;
-
 
 // ---------------------------------------------------------------------------
 class TForm1 : public TForm {
@@ -110,8 +112,8 @@ __published: // IDE-managed Components
 	TLabel *OptMode;
 	TLabel *Label19;
 	TLabel *Label20;
-	TLabel *EnableCount;
-	TLabel *DisableCount;
+	TLabel *EnableVectorCountLB;
+	TLabel *DisableVectorCountLB;
 	TLabel *Label21;
 	TLabel *TotalCount;
 	TLabel *Label22;
@@ -121,15 +123,33 @@ __published: // IDE-managed Components
 	TLabel *OptimizationMode;
 	TLabel *Label24;
 	TLabel *Label25;
-	TLabel *EnabledCount;
-	TLabel *DisabledCount;
+	TLabel *EnabledWireCountLB;
+	TLabel *DisabledWireCountLB;
 	TPoint3DSeries *Series9;
 	TPoint3DSeries *Series10;
+	TLineSeries *Series11;
+	TSaveDialog *SaveDialog1;
+	TLabel *Label1;
+	TLabel *Label26;
+	TLabel *EnableWireLB;
+	TLabel *Label27;
+	TLabel *IgnoredWireCountLB;
+	TLabel *Label28;
+	TLabel *EnabledVWireCountLB;
+	TLabel *Label30;
+	TLabel *DisabledVWireCountLB;
+	TLabel *Label29;
+	TLabel *SWRVectorLB;
+	TLabel *EnabledListLB;
+	TLabel *IgnoredListLB;
+	TLabel *SWRListLB;
+	TProgressBar *ProgressBar1;
 
 	void __fastcall OpenClick(TObject *Sender);
 	void __fastcall Timer1Timer(TObject *Sender);
 	void __fastcall MakeClick(TObject *Sender);
 	void __fastcall CancelClick(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 
 private: // User declarations
 
@@ -143,6 +163,7 @@ private: // User declarations
 
 	struct nec_wires {
 		unsigned int ID;
+		bool Enabled;
 		unsigned int Segments;
 		double X1;
 		double Y1;
@@ -152,9 +173,10 @@ private: // User declarations
 		double Z2;
 		double Diameter;
 		bool Support;
-		int AttachedToX1Y1Z1ID;
-		int AttachedToX2Y2Z2ID;
-		bool Enabled;
+		// the vectors below are used to keep track of which other wires are connected to
+		// this wire on either side
+		//std::vector<unsigned int>AttachedToX1Y1Z1ID;
+		//std::vector<unsigned int>AttachedToX2Y2Z2ID;
 	};
 
 	struct nec_wire_ground {
@@ -241,15 +263,50 @@ private: // User declarations
 	// optimization variables
 	double LastVSWR;
 	double LastHorGain;
-	int LastChangedWire;
+	// int LastChangedWire;
 	unsigned int Iteration;
+	bool Done;
+	bool OnlyAttached;
+	double SWRCompare;
+	double SWRRCompare;
+	double SWRXCompare;
+	unsigned int BestWireID;
 
-	int __fastcall OpenNECFile(AnsiString Filename,
-		nec_file_results* file_results,bool UpdateSegmentGraph=false);
+	int __fastcall OpenNECFile(AnsiString Filename, nec_file_results* file_results, bool UpdateSegmentGraph = false);
 
-	bool graphUpdateFlag;
-	vector<int>triedDisable;
-	vector<int>triedEnable;
+	// model build functions
+	void __fastcall GetInitialBandResolution(unsigned int BandSelection, double* resolution, double* Scale);
+
+	bool __fastcall BuildDipoleModel(double* MaxHeightMeters, double* MinHeightMeters, double *MaxWidthMeters,
+	  double* MaxDepthMeters, double* resolution, double *FeedPointHeight, double* Frequency, double* WireDiameter,
+	  double* Scale, unsigned int BandSelection, double* BandBottom, double* BandLength);
+
+	bool BuildCube(double *MaxHeightMeters, double *MinHeightMeters, double *MaxWidthMeters, double* MaxDepthMeters,
+	  double* resolution, double *FeedPointHeight, double* Frequency, double* WireDiameter, double* Scale,
+	  unsigned int BandSelection, double* BandBottom, double* BandLength);
+
+	WideString CreateNECFile(nec_counts* inNec_Counts, nec_wires* inNec_Wires, nec_wire_ground* inNec_Ground,
+	  nec_loads* inNec_Loads, nec_grounds* inNec_Grounds, nec_excitation* inNec_Excitation,
+	  nec_frequency* inNec_Frequency, nec_radiation* inNec_Radiation);
+
+	// calculation functions
+	unsigned int __fastcall CalculateMinimumNumSegments(double FrequencyMHz, double* wirelength);
+	double __fastcall WireLength(double X1, double Y1, double Z1, double X2, double Y2, double Z2);
+	void AdjustUserInputSizeByScale(double* MaxWidthMeters, double* MaxDepthMeters, double* MaxHeightMeters,
+	  double* MinHeightMeters, double* FeedPointHeight, double* Scale);
+	void SetBandParameters(unsigned int BandSelection, double* BandBottom, double*BandLength, double* Frequency,
+	  double* resolution, double* WireDiameter, double* Scale);
+
+	  bool graphUpdateFlag;
+
+	vector<unsigned int>triedDisable;
+	vector<unsigned int>triedEnable;
+	vector<unsigned int>triedNew;
+
+	std::vector<unsigned int>PossibleWireIDs;
+	// std::vector<unsigned int>SWR_R;
+	// std::vector<unsigned int>SWR_X;
+
 	bool ModeEnable;
 
 	enum OptimizeModeType {
@@ -257,29 +314,22 @@ private: // User declarations
 		OptimizeStripUncessesarySWRWires
 	};
 
+	enum OptimizeWireType {
+		VerifySWRChange = 0, FindAllAttachedWires
+	};
+
 	OptimizeModeType OptimizationOperatingMode;
 	OptimizeModeType LastOptimizationMode;
 
-	std::vector<double>SWR_Optimize_VSWR;
-	std::vector<double>Optimize_HorzGain;
-	std::vector<double>SWR_Optimize_WireID;
+	std::vector<double>SWR_Optimize_SWR_R;
+	std::vector<double>SWR_Optimize_SWR_X;
+	std::vector<double>SWR_Optimize_SWR;
+	// std::vector<double>Optimize_HorzGain;
+
 	double RecentHorzGainTarget;
-    double RecentSWRTarget;
+	double RecentSWRTarget;
 
 	int OptimizeCurrentWireID;
-
-	WideString CreateNECFile(nec_counts* inNec_Counts, nec_wires* inNec_Wires,
-		nec_wire_ground* inNec_Ground, nec_loads* inNec_Loads,
-		nec_grounds* inNec_Grounds, nec_excitation* inNec_Excitation,
-		nec_frequency* inNec_Frequency, nec_radiation* inNec_Radiation);
-
-	unsigned int __fastcall CalculateMinimumNumSegments(double FrequencyMHz,
-		double wirelength);
-	void BuildCube(unsigned int MaxHeightMeters, unsigned int MinHeightMeters,
-		unsigned int MaxWidthMeters, unsigned int MaxDepthMeters,
-		float resolution, unsigned int FeedPointHeight);
-	double __fastcall WireLength(double X1, double Y1, double Z1, double X2,
-		double Y2, double Z2);
 
 public: // User declarations
 

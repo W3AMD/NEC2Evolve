@@ -1,21 +1,5 @@
 /*Translation to C++ by Tim Molteno
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- Based on the C port by N. Kyriazis
+ Based on the C port by N. Kyriazis
  Including some pieces from additional work by
  Jeroen Vreeken <pe1rxq@amsat.org>
 
@@ -157,9 +141,9 @@ int nec_main(int argc, char **argv, nec_output_file& s_output,
 	/*input card mnemonic list*/
 	/*"XT" stands for "exit", added for testing*/
 #define CMD_NUM  21
-	const char *atst[CMD_NUM] = {"FR", "LD", "GN", "EX", "NT", "TL", \
- "XQ", "GD", "RP", "NX", "PT", "KH", \
- "NE", "NH", "PQ", "EK", "CP", "PL", \
+	const char *atst[CMD_NUM] = {"FR", "LD", "GN", "EX", "NT", "TL",
+ "XQ", "GD", "RP", "NX", "PT", "KH",
+ "NE", "NH", "PQ", "EK", "CP", "PL",
  "EN", "WG", "MP"};
 
 	int itmp3, itmp2, itmp4;

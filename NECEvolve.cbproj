@@ -6,8 +6,8 @@
         <AppType>Application</AppType>
         <MainSource>NECEvolve.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -58,6 +58,11 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
+        <VerInfo_Release>4</VerInfo_Release>
+        <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <AllPackageLibs>rtl.lib;vcl.lib;TeePro923.lib;vclimg.lib;vclx.lib;xmlrtl.lib;TeeUI923.lib;Tee923.lib</AllPackageLibs>
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
         <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
@@ -72,12 +77,12 @@
         <RunBCCOutOfProcess>true</RunBCCOutOfProcess>
         <ILINK_LibraryPath>C:\local\NEC2cpp\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=W3AMD;FileDescription=NECEvolve;FileVersion=0.1.4.0;InternalName=NECEvolve;LegalCopyright=2016 All rights reserved;LegalTrademarks=;OriginalFilename=NECEvolve;ProductName=NECEvolve;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <UsePackages>true</UsePackages>
         <IntermediateOutputDir>.\$(Platform)\$(Config)</IntermediateOutputDir>
-        <FinalOutputDir>.\$(Platform)\$(Config)</FinalOutputDir>
+        <FinalOutputDir>.\$(Platform)</FinalOutputDir>
         <BCC_wpar>false</BCC_wpar>
         <BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
         <BCC_ExtendedErrorInfo>true</BCC_ExtendedErrorInfo>
@@ -123,6 +128,11 @@
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_Release>10</VerInfo_Release>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;vclimg.bpi;vclx.bpi;xmlrtl.bpi</LinkPackageImports>
+        <VerInfo_Build>23</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=W3AMD;FileDescription=NECEvolve;FileVersion=0.1.10.23;InternalName=NECEvolve;LegalCopyright=2016 All rights reserved;LegalTrademarks=;OriginalFilename=NECEvolve;ProductName=NECEvolve;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <BCC_CorrectFDIVFlaw>true</BCC_CorrectFDIVFlaw>
         <UsingDelphiRTL>true</UsingDelphiRTL>
         <DCC_DebugInfoInTds>true</DCC_DebugInfoInTds>
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
@@ -132,13 +142,13 @@
         <LinkPackageStatics>TeePro923.lib;TeeUI923.lib;Tee923.lib</LinkPackageStatics>
         <BCC_PCHUsage>None</BCC_PCHUsage>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;vclimg.bpi;vclx.bpi;xmlrtl.bpi</LinkPackageImports>
         <AppEnableHighDPI>true</AppEnableHighDPI>
-        <BCC_UseClassicCompiler>false</BCC_UseClassicCompiler>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <BCC_EnableBatchCompilation>true</BCC_EnableBatchCompilation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <VerInfo_Release>10</VerInfo_Release>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=0.1.10.37;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>37</VerInfo_Build>
         <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
         <DCC_RangeChecking>true</DCC_RangeChecking>
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
@@ -149,24 +159,29 @@
         <BCC_OptimizeForSize>false</BCC_OptimizeForSize>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <VerInfo_Release>10</VerInfo_Release>
+        <VerInfo_Keys>CompanyName=W3AMD;FileDescription=NECEvolve;FileVersion=0.1.10.15;InternalName=NECEvolve;LegalCopyright=2016 All rights reserved;LegalTrademarks=;OriginalFilename=NECEvolve32;ProductName=NECEvolve;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DynamicRTL>false</DynamicRTL>
+        <VerInfo_Build>15</VerInfo_Build>
         <UsePackages>false</UsePackages>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <LinkPackageStatics>rtl.lib;vcl.lib;TeePro923.lib;vclimg.lib;vclx.lib;xmlrtl.lib;TeeUI923.lib;Tee923.lib</LinkPackageStatics>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+        <VerInfo_Release>10</VerInfo_Release>
+        <LinkPackageStatics>rtl.lib;vcl.lib;TeePro923.lib;vclimg.lib;vclx.lib;xmlrtl.lib;TeeUI923.lib;Tee923.lib</LinkPackageStatics>
+        <DynamicRTL>false</DynamicRTL>
+        <UsePackages>false</UsePackages>
+        <VerInfo_Keys>CompanyName=W3AMD;FileDescription=NECEvolve;FileVersion=0.1.10.19;InternalName=NECEvolve;LegalCopyright=2016 W3AMD;LegalTrademarks=N/A;OriginalFilename=NECEvolve64;ProductName=NEC Evolve;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>19</VerInfo_Build>
         <BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;TeePro923.bpi;vclimg.bpi;vclx.bpi;xmlrtl.bpi;TeeUI923.bpi;Tee923.bpi</LinkPackageImports>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
     </PropertyGroup>

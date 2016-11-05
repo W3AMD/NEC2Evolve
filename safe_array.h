@@ -87,7 +87,7 @@ public:
     return data_size_;
   }
 
-  void resize(int32_t n_rows, int32_t n_cols) {
+  void resize(int64_t n_rows, int64_t n_cols) {
     rows_ = n_rows;
     cols_ = n_cols;
     
@@ -98,7 +98,7 @@ public:
   // resizing as appropriate.
   void copy(const safe_array<T>& in_array) {
     if (in_array.rows_ == 0)
-      resize(in_array.len_);
+	  resize(in_array.len_);
     else
       resize(in_array.rows_,in_array.cols_);
       
@@ -114,12 +114,12 @@ public:
 #endif
     if (new_length > data_size_) {
       // We allocate resize_chunk_ more bytes than we need to avoid
-      // resizing too often. 
-      data_size_ = new_length + resize_chunk_;
-      try {
-        T* new_data_ = new T[data_size_];
-        if (0 != len_)
-          std::memcpy(new_data_, data_, len_ * sizeof(T));
+	  // resizing too often.
+	  data_size_ = new_length + resize_chunk_;
+	  try {
+		T* new_data_ = new T[data_size_];
+		if (0 != len_)
+		  std::memcpy(new_data_, data_, len_ * sizeof(T));
 
         delete[] data_;
         data_ = new_data_;

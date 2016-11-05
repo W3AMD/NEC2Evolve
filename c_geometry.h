@@ -21,8 +21,8 @@
 #include <vector>
 #include <iostream>
 
-/*Replaces the "10000" limit used to*/
-/*identify segment/patch connections*/
+ /*Replaces the "10000" limit used to*/
+/*identify meximum segment/patch connections*/
 #define	PCHCON  1000000
 
 class nec_context;
@@ -53,10 +53,8 @@ public:
 	// use vector to store original center positions since these
 	// get overwritten in the x,y,z variables
 	std::vector<nec_float>XCenterSeg, YCenterSeg, ZCenterSeg;
-	void get_xyzSegmentCoord(int index, nec_float* segX, nec_float* segY,
-		nec_float* segZ);
-	void get_xyzSegmentOrignalAbsolute(int index, nec_float* segX,
-		nec_float* segY, nec_float* segZ);
+	void get_xyzSegmentCoord(int index, nec_float* segX, nec_float* segY, nec_float* segZ);
+	void get_xyzSegmentOrignalAbsolute(int index, nec_float* segX, nec_float* segY, nec_float* segZ);
 	void set_context(nec_context* m_context);
 
 	void clear_wires(void);
@@ -67,19 +65,17 @@ public:
 	 \param rdel Ratio of the length of a segment to the length of the previous segment.  (Set to 1.0 if segments have uniform length)
 	 \param rrad The ratio of the radii of adjacent segments (Set to 1.0 if not tapered)
 	 */
-	void wire(int tag_id, int segment_count, nec_float xw1, nec_float yw1,
-		nec_float zw1, // first co-ordinate
-		nec_float xw2, nec_float yw2, nec_float zw2, // second co-ordinate
-		nec_float rad, nec_float rdel, nec_float rrad);
+	void wire(int tag_id, int segment_count, nec_float xw1, nec_float yw1, nec_float zw1, // first co-ordinate
+	  nec_float xw2, nec_float yw2, nec_float zw2, // second co-ordinate
+	  nec_float rad, nec_float rdel, nec_float rrad);
 
-	void arc(int tag_id, int segment_count, nec_float rada, nec_float ang1,
-		nec_float ang2, nec_float rad);
+	void arc(int tag_id, int segment_count, nec_float rada, nec_float ang1, nec_float ang2, nec_float rad);
 
-	void helix(int tag_id, int segment_count, nec_float s, nec_float hl,
-		nec_float a1, nec_float b1, nec_float a2, nec_float b2, nec_float rad);
+	void helix(int tag_id, int segment_count, nec_float s, nec_float hl, nec_float a1, nec_float b1, nec_float a2,
+	  nec_float b2, nec_float rad);
 
-	void move(nec_float rox, nec_float roy, nec_float roz, nec_float xs,
-		nec_float ys, nec_float zs, int its, int nrpt, int itgi);
+	void move(nec_float rox, nec_float roy, nec_float roz, nec_float xs, nec_float ys, nec_float zs, int its, int nrpt,
+	  int itgi);
 
 	/*! \brief Reflects partial structure along x,y, or z axes.
 
@@ -107,18 +103,14 @@ public:
 	/*! \brief Scale all dimensions of a structure by a constant. */
 	void scale(nec_float xw1);
 
-	void patch(int nx, int ny, nec_float ax1, nec_float ay1, nec_float az1,
-		nec_float ax2, nec_float ay2, nec_float az2, nec_float ax3,
-		nec_float ay3, nec_float az3, nec_float ax4, nec_float ay4,
-		nec_float az4);
+	void patch(int nx, int ny, nec_float ax1, nec_float ay1, nec_float az1, nec_float ax2, nec_float ay2, nec_float az2,
+	  nec_float ax3, nec_float ay3, nec_float az3, nec_float ax4, nec_float ay4, nec_float az4);
 
-	void sp_card(int ns, nec_float in_x1, nec_float in_y1, nec_float in_z1,
-		nec_float in_x2, nec_float in_y2, nec_float in_z2);
+	void sp_card(int ns, nec_float in_x1, nec_float in_y1, nec_float in_z1, nec_float in_x2, nec_float in_y2,
+	  nec_float in_z2);
 
-	void sc_card(int i2, nec_float x3, nec_float y3, nec_float z3, nec_float x4,
-		nec_float y4, nec_float z4);
-	void sc_multiple_card(int i2, nec_float x3, nec_float y3, nec_float z3,
-		nec_float x4, nec_float y4, nec_float z4);
+	void sc_card(int i2, nec_float x3, nec_float y3, nec_float z3, nec_float x4, nec_float y4, nec_float z4);
+	void sc_multiple_card(int i2, nec_float x3, nec_float y3, nec_float z3, nec_float x4, nec_float y4, nec_float z4);
 
 	void gx_card(int card_int_1, int card_int_2);
 
@@ -142,18 +134,16 @@ public:
 	void tbf(int i, int icap);
 	void trio(int j);
 
-	void get_current_coefficients(nec_float wavelength, complex_array& curx,
-		real_array& air, real_array& aii, real_array& bir, real_array& bii,
-		real_array& cir, real_array& cii, complex_array& vqds, int nqds,
-		int_array& iqds);
+	void get_current_coefficients(nec_float wavelength, complex_array& curx, real_array& air, real_array& aii,
+	  real_array& bir, real_array& bii, real_array& cir, real_array& cii, complex_array& vqds, int nqds,
+	  int_array& iqds);
 
-	nec_float patch_angle(int patch_index, nec_float in_ax, nec_float in_ay,
-		nec_float in_az);
+	nec_float patch_angle(int patch_index, nec_float in_ax, nec_float in_ay, nec_float in_az);
 
 	/*! \brief Calculate the xyz components of the electric field due to surface currents.
 	 */
-	void fflds(nec_float rox, nec_float roy, nec_float roz, complex_array& scur,
-		nec_complex *in_ex, nec_complex *in_ey, nec_complex *in_ez);
+	void fflds(nec_float rox, nec_float roy, nec_float roz, complex_array& scur, nec_complex *in_ex, nec_complex *in_ey,
+	  nec_complex *in_ez);
 
 	int n_segments; // The number of segments
 	int np;
@@ -192,9 +182,8 @@ private:
 
 	void connect_segments(int ignd);
 
-	void read_geometry_card(FILE* input_fp, char *gm, int *i1, int *i2,
-		nec_float *x1, nec_float *y1, nec_float *z1, nec_float *x2,
-		nec_float *y2, nec_float *z2, nec_float *rad);
+	void read_geometry_card(FILE* input_fp, char *gm, int *i1, int *i2, nec_float *x1, nec_float *y1, nec_float *z1,
+	  nec_float *x2, nec_float *y2, nec_float *z2, nec_float *rad);
 
 	nec_context* m_context;
 	nec_output_file* m_output;

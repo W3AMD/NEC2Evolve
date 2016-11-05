@@ -975,7 +975,7 @@ void nec_context::simulate(bool far_field_flag) {
 						freq_mhz += delfrq;
 				}
 
-				_wavelength = em::get_wavelength(1.0e6 * freq_mhz);
+				_wavelength = em::get_wavelength(1.0e+6 * freq_mhz);
 
 				print_freq_int_krnl(freq_mhz, _wavelength, rkh, m_use_exk);
 
